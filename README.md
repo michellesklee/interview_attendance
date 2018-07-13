@@ -1,9 +1,30 @@
-# Case Study: Non-parametric models
+# Predicting Interview Attendance
 
-In this case study you should use non-parametric supervised learning models you were exposed to in class (such as kNN, decision trees, random forest, boosting) to create a predictive machine learning model.  It may be interesting to compare non-parametric to parametric (linear/logistic regression) results.  
+#### Data Source:
+**Kaggle:** [Interview Attendance Problem](https://www.kaggle.com/vishnusraghavan/the-interview-attendance-problem)
 
-Here are your case study options:  
+|    | Client name   | Industry        | Location   | Position to be closed   | Nature of Skillset   | Interview Type   | Gender   | Candidate Current Location   | Candidate Job Location   | Interview Venue   | Candidate Native location   | Have you obtained the necessary permission to start at the required time   | Hope there will be no unscheduled meetings   | Can I Call you three hours before the interview and follow up on your attendance for the interview   | Can I have an alternative number/ desk number. I assure you that I will not trouble you too much   | Have you taken a printout of your updated resume. Have you read the JD and understood the same   | Are you clear with the venue details and the landmark.   | Has the call letter been shared   | Expected Attendance   | Observed Attendance   | Marital Status   |
+|---:|:--------------|:----------------|:-----------|:------------------------|:---------------------|:-----------------|:---------|:-----------------------------|:-------------------------|:------------------|:----------------------------|:---------------------------------------------------------------------------|:---------------------------------------------|:-----------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------|:---------------------------------------------------------|:----------------------------------|:----------------------|:----------------------|:-----------------|
+|  0 | Hospira       | Pharmaceuticals | Chennai    | Production- Sterile     | Routine              | Scheduled Walkin | Male     | Chennai                      | Hosur                    | Hosur             | Hosur                       | Yes                                                                        | Yes                                          | Yes                                                                                                  | Yes                                                                                                | Yes                                                                                              | Yes                                                      | Yes                               | Yes                   | No                    | Single           |
+|  1 | Hospira       | Pharmaceuticals | Chennai    | Production- Sterile     | Routine              | Scheduled Walkin | Male     | Chennai                      | Bangalore                | Hosur             | Trichy                      | Yes                                                                        | Yes                                          | Yes                                                                                                  | Yes                                                                                                | Yes                                                                                              | Yes                                                      | Yes                               | Yes                   | No                    | Single           |
+|  2 | Hospira       | Pharmaceuticals | Chennai    | Production- Sterile     | Routine              | Scheduled Walkin | Male     | Chennai                      | Chennai                  | Hosur             | Chennai                     | nan                                                                        | Na                                           | nan                                                                                                  | nan                                                                                                | nan                                                                                              | nan                                                      | nan                               | Uncertain             | No                    | Single           |
+|  3 | Hospira       | Pharmaceuticals | Chennai    | Production- Sterile     | Routine              | Scheduled Walkin | Male     | Chennai                      | Chennai                  | Hosur             | Chennai                     | Yes                                                                        | Yes                                          | No                                                                                                   | Yes                                                                                                | No                                                                                               | Yes                                                      | Yes                               | Uncertain             | No                    | Single           |
+|  4 | Hospira       | Pharmaceuticals | Chennai    | Production- Sterile     | Routine              | Scheduled Walkin | Male     | Chennai                      | Bangalore                | Hosur             | Chennai                     | Yes                                                                        | Yes                                          | Yes                                                                                                  | No                                                                                                 | Yes                                                                                              | Yes                                                      | Yes                               | Uncertain             | No                    | Married          |
 
-* [Predict ride-sharing company churn](https://github.com/gSchool/dsi-ml-case-study)  
+### I. Dataset Creation
+**Data Cleaning**
 
-* [Predict interview attendance](https://github.com/gSchool/ds-interview-attendance-case-study)
+
+**One Hot Encoding**
+```python
+def one_hot_encoding(df):
+    le = preprocessing.LabelEncoder()
+    enc = preprocessing.OneHotEncoder()
+
+    df_int = df.astype(str).apply(le.fit_transform) #transforms strings to integers
+    enc.fit(df_int)
+    df_encode = enc.transform(df_int).toarray() #returns array of 0/1
+    return df_encode
+```
+
+### II. Exploratory Data Analysis
