@@ -1,9 +1,9 @@
 # Predicting Interview Attendance
 
-#### Aim
+### Aim
 A candidate not showing up to a scheduled interview wastes HR time and resources. In this case study, we would like to predict whether or not a candidate will attend a job interview based on 20 categorical features. In this case, we are interested in precision because our aim is to reduce false positives.
 
-#### Data Source:
+### Data Source:
 **Kaggle:** [Interview Attendance Problem](https://www.kaggle.com/vishnusraghavan/the-interview-attendance-problem)
 
 |    | Date of Interview   | Client name   | Industry        | Location   | Position to be closed   | Nature of Skillset   | Interview Type   | Name(Cand ID)   | Gender   | Candidate Current Location   | Candidate Job Location   | Interview Venue   | Candidate Native location   | Have you obtained the necessary permission to start at the required time   | Hope there will be no unscheduled meetings   | Can I Call you three hours before the interview and follow up on your attendance for the interview   | Can I have an alternative number/ desk number. I assure you that I will not trouble you too much   | Have you taken a printout of your updated resume. Have you read the JD and understood the same   | Are you clear with the venue details and the landmark.   | Has the call letter been shared   | Expected Attendance   | Observed Attendance   | Marital Status   |   Unnamed: 23 |   Unnamed: 24 |   Unnamed: 25 |   Unnamed: 26 |   Unnamed: 27 |
