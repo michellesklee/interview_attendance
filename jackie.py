@@ -119,12 +119,7 @@ print('AdaBoost Precision: {}'.format(precision_score(ada_preds, y_test)))
 cv = k_folds_CV(ada, n_splits=10)
 print('CV Ada Precision: {}'.format(cv))
 
-# Mega Super Ultra
-msu = VotingClassifier(
-    estimators= [('dt', dt), ('rf', rf), ('bag', bag), ('knn', knn), ('boost', boost), ('ada', ada)], voting='soft')
-msu.fit(X_train, y_train)
-msu_preds = msu.predict(X_test)
-print("Mega-Super-Ultra: {}".format(accuracy_score(msu_preds, y_test)))
+
 
 
 
@@ -158,22 +153,28 @@ print("Best GDR Precision: {}".format(precision_score(best_gdr_preds, y_test)))
 cv = k_folds_CV(best_gdr_model, n_splits=10)
 print("CV Best GDR Precision: {}".format(cv))
 
-
+# Mega Super Ultra
+msu = VotingClassifier(
+    estimators= [('dt', dt), ('rf', rf), ('bag', bag), ('knn', knn), ('boost', boost), ('ada', ada), ('bgdr', best_gdr_model)], voting='soft')
+msu.fit(X_train, y_train)
+msu_preds = msu.predict(X_test)
+print("Mega-Super-Ultra: {}".format(accuracy_score(msu_preds, y_test)))
 # Important features (feature importance or partial dependence plot)
 
-# features = list(zip(np.asarray(df.columns), boost.feature_importances_))
-#
-# # print(features[:5])
-#
-# importances = boost.feature_importances_
-# # std = np.std([tree.feature_importances_ for tree in boost.estimators_], axis=0)
-# indices = np.argsort(importances)[::-1]
-#
-# # plot
-#  # yerr=std[indices],
-# plt.figure(figsize=(10,8))
-# plt.title("Features Importances")
-# plt.bar(range(X_test.shape[1]), importances[indices], color='r', align="center")
-# plt.xticks(range(X_test.shape[1]), np.asarray(df.columns)[indices], rotation=30)
-# plt.xlim([-1, X_test.shape[1]])
-# plt.show()
+features = list(zip(np.asarray(df.columns), best_gdr_model.feature_importances_))
+
+# print(features[:5])
+
+importances = best_gdr_model.feature_importances_
+# std = np.std([tree.feature_importances_ for tree in boost.estimators_], axis=0)
+indices = np.argsort(importances)[::-1]
+
+# plot
+ # yerr=std[indices],
+plt.figure(figsize=(10,8))
+plt.title("Features Importances")
+plt.bar(range(X_test.shape[1]), importances[indices], color='r', align="center")
+plt.xticks(range(X_test.shape[1]), np.asarray(df.columns)[indices], rotation=30)
+plt.xlim([-1, X_test.shape[1]])
+plt.savefig('features_importances.png')
+plt.show()
