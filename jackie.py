@@ -7,7 +7,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import BaggingClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.ensemble import AdaBoostClassifier
+from sklearn.ensemble import AdaBoostClassifier, VotingClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import recall_score
 from sklearn.metrics import precision_score
@@ -20,14 +20,18 @@ from sklearn.model_selection import GridSearchCV
 # X = dbInterviews[??]
 # y = dbInterviews[??]
 
-df = pd.read_csv("/Users/jacquelinekirschner/Galvanize/dsi-random-forest/data/churn.csv")
-df.replace('no', False, inplace=True)
-df.replace('yes', True, inplace=True)
-df.replace('False.', False, inplace=True)
-df.replace('True.', True, inplace=True)
-df.drop(["State", "Area Code", "Phone"], axis=1, inplace=True)
+df = pd.read_pickle('pickled.pkl')
 
-y = df.pop('Churn?').values
+df = pd.get_dummies(df)
+
+# df = pd.read_csv("/Users/jacquelinekirschner/Galvanize/dsi-random-forest/data/churn.csv")
+# df.replace('no', False, inplace=True)
+# df.replace('yes', True, inplace=True)
+# df.replace('False.', False, inplace=True)
+# df.replace('True.', True, inplace=True)
+# df.drop(["State", "Area Code", "Phone"], axis=1, inplace=True)
+
+y = df.pop('observed_attendance').values
 X = df.values
 
 X_train, X_test, y_train, y_test = train_test_split(X,y)
@@ -116,47 +120,61 @@ cv = k_folds_CV(ada, n_splits=10)
 print('CV Ada Precision: {}'.format(cv))
 
 
+
+
+
 # Decide Best model
 
 # Grid search for best params
 
 # rf example
-# random_forest_grid = {'max_depth': [3, None],
-#                       'max_features': ['sqrt', 'log2', None],
-#                       'min_samples_split': [2, 4],
-#                       'min_samples_leaf': [1, 2, 4],
-#                       'bootstrap': [True, False],
-#                       'n_estimators': [10, 20, 40, 80],
-#                       'random_state': [1]}
-#
-# rf_gridsearch = GridSearchCV(RandomForestClassifier(),
-#                              random_forest_grid,
-#                              n_jobs=-1,
-#                              verbose=True,
-#                              scoring='mean_squared_error')
-# rf_gridsearch.fit(X_train, y_train)
-#
-# best_rf_model = rf_gridsearch.best_estimator_
-# best_rf_model.fit(X_train, y_train)
-# best_rf_preds = rf.predict(X_train)
+gradient_boost_grid = {'max_depth': [3, None],
+                      'max_features': ['sqrt', 'log2', None],
+                      'min_samples_split': [2, 4, 6],
+                      'min_samples_leaf': [1, 2, 4],
+                      'n_estimators': [50, 100, 150],
+                      'random_state': [1, None],
+                      'min_impurity_decrease':[0.0, 0.2],
+                      'learning_rate': [0.1, 1]}
 
-# print("Best RF Accuracy: {}".format(accuracy_score(best_rf_preds, y_test)))
-# print("Best RF Recall: {}".format(recall_score(best_rf_preds, y_test)))
-# print("Best RF Precision: {}".format(precision_score(best_rf_preds, y_test)))
-# print('CV Best RF Precision: {}'.(k_folds_CV(best_rf_model, n_splits=10)))
+gdr_gridsearch = GridSearchCV(GradientBoostingClassifier(),
+                             gradient_boost_grid,
+                             n_jobs=-1,
+                             verbose=True)
+gdr_gridsearch.fit(X_train, y_train)
 
+best_gdr_model = gdr_gridsearch.best_estimator_
+best_gdr_model.fit(X_train, y_train)
+best_gdr_preds = best_gdr_model.predict(X_test)
 
+print("Best GDR Accuracy: {}".format(accuracy_score(best_gdr_preds, y_test)))
+print("Best GDR Recall: {}".format(recall_score(best_gdr_preds, y_test)))
+print("Best GDR Precision: {}".format(precision_score(best_gdr_preds, y_test)))
+cv = k_folds_CV(best_gdr_model, n_splits=10)
+print("CV Best GDR Precision: {}".format(cv))
+
+# Mega Super Ultra
+msu = VotingClassifier(
+    estimators= [('dt', dt), ('rf', rf), ('bag', bag), ('knn', knn), ('boost', boost), ('ada', ada), ('bgdr', best_gdr_model)], voting='soft')
+msu.fit(X_train, y_train)
+msu_preds = msu.predict(X_test)
+print("Mega-Super-Ultra: {}".format(accuracy_score(msu_preds, y_test)))
 # Important features (feature importance or partial dependence plot)
 
-# features = list(zip(np.asarray(df.columns), best_rf_model.feature_importances_))
-# sort
-# print(features)
+features = list(zip(np.asarray(df.columns), best_gdr_model.feature_importances_))
 
+# print(features[:5])
+
+importances = best_gdr_model.feature_importances_
+# std = np.std([tree.feature_importances_ for tree in boost.estimators_], axis=0)
+indices = np.argsort(importances)[::-1]
 
 # plot
-# plt.figure(figsize=(10,8))
-# plt.title("Features Importances")
-# plt.bar(range(X_test.shape[1]), importances[indices], yerr=std[indices], color='r', align="center")
-# plt.xticks(range(X_test.shape[1]), np.asarray(df.columns)[indices], rotation=30)
-# plt.xlim([-1, X_test.shape[1]])
-# plt.show()
+ # yerr=std[indices],
+plt.figure(figsize=(10,8))
+plt.title("Features Importances")
+plt.bar(range(X_test.shape[1]), importances[indices], color='r', align="center")
+plt.xticks(range(X_test.shape[1]), np.asarray(df.columns)[indices], rotation=30)
+plt.xlim([-1, X_test.shape[1]])
+plt.savefig('features_importances.png')
+plt.show()
