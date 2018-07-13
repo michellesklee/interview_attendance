@@ -127,17 +127,12 @@ print('CV Ada Precision: {}'.format(cv))
 
 # Grid search for best params
 
-# rf example
-gradient_boost_grid = {'max_depth': [3, None],
-                      'max_features': ['sqrt', 'log2', None],
-                      'min_samples_split': [2, 4, 6],
-                      'min_samples_leaf': [1, 2, 4],
-                      'n_estimators': [50, 100, 150],
+# ada example
+gradient_boost_grid = {'n_estimators': [50, 100, 150, 200],
                       'random_state': [1, None],
-                      'min_impurity_decrease':[0.0, 0.2],
-                      'learning_rate': [0.1, 1]}
+                      'learning_rate': [0.1, .5, 1]}
 
-gdr_gridsearch = GridSearchCV(GradientBoostingClassifier(),
+gdr_gridsearch = GridSearchCV(AdaBoostClassifier(),
                              gradient_boost_grid,
                              n_jobs=-1,
                              verbose=True)
@@ -147,13 +142,13 @@ best_gdr_model = gdr_gridsearch.best_estimator_
 best_gdr_model.fit(X_train, y_train)
 best_gdr_preds = best_gdr_model.predict(X_test)
 
-print("Best GDR Accuracy: {}".format(accuracy_score(best_gdr_preds, y_test)))
-print("Best GDR Recall: {}".format(recall_score(best_gdr_preds, y_test)))
-print("Best GDR Precision: {}".format(precision_score(best_gdr_preds, y_test)))
+print("Best ADA Accuracy: {}".format(accuracy_score(best_gdr_preds, y_test)))
+print("Best ADA Recall: {}".format(recall_score(best_gdr_preds, y_test)))
+print("Best ADA Precision: {}".format(precision_score(best_gdr_preds, y_test)))
 cv = k_folds_CV(best_gdr_model, n_splits=10)
-print("CV Best GDR Precision: {}".format(cv))
+print("CV Best ADA Precision: {}".format(cv))
 
-# Mega Super Ultra
+# # Mega Super Ultra
 msu = VotingClassifier(
     estimators= [('dt', dt), ('rf', rf), ('bag', bag), ('knn', knn), ('boost', boost), ('ada', ada), ('bgdr', best_gdr_model)], voting='soft')
 msu.fit(X_train, y_train)
@@ -163,7 +158,8 @@ print("Mega-Super-Ultra: {}".format(accuracy_score(msu_preds, y_test)))
 
 features = list(zip(np.asarray(df.columns), best_gdr_model.feature_importances_))
 
-# print(features[:5])
+
+print(features)
 
 importances = best_gdr_model.feature_importances_
 # std = np.std([tree.feature_importances_ for tree in boost.estimators_], axis=0)
