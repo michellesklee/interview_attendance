@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from sklearn import preprocessing
 
-df = pd.read_csv('Interview.csv')
+df = pd.read_pickle('pickled.pkl')
 
 def one_hot_encoding(df):
     le = preprocessing.LabelEncoder()
