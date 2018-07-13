@@ -11,20 +11,8 @@
 |  3 | 13.02.2015          | Hospira       | Pharmaceuticals | Chennai    | Production- Sterile     | Routine              | Scheduled Walkin | Candidate 4     | Male     | Chennai                      | Chennai                  | Hosur             | Chennai                     | Yes                                                                        | Yes                                          | No                                                                                                   | Yes                                                                                                | No                                                                                               | Yes                                                      | Yes                               | Uncertain             | No                    | Single           |           nan |           nan |           nan |           nan |           nan |
 |  4 | 13.02.2015          | Hospira       | Pharmaceuticals | Chennai    | Production- Sterile     | Routine              | Scheduled Walkin | Candidate 5     | Male     | Chennai                      | Bangalore                | Hosur             | Chennai                     | Yes                                                                        | Yes                                          | Yes                                                                                                  | No                                                                                                 | Yes                                                                                              | Yes                                                      | Yes                               | Uncertain             | No                    | Married          |           nan |           nan |           nan |           nan |           nan |
 
-### I. Dataset Creation
-**Data Cleaning**
+### I. Data Cleaning
 
+### II. Build Models
 
-**One Hot Encoding**
-```python
-def one_hot_encoding(df):
-    le = preprocessing.LabelEncoder()
-    enc = preprocessing.OneHotEncoder()
-
-    df_int = df.astype(str).apply(le.fit_transform) #transforms strings to integers
-    enc.fit(df_int)
-    df_encode = enc.transform(df_int).toarray() #returns array of 0/1
-    return df_encode
-```
-
-### II. Exploratory Data Analysis
+### III. Evaluate Models 
