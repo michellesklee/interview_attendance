@@ -85,7 +85,6 @@ CV Best Ada Precision: 0.83
 3. Position to be closed Niche: 0.08
 (Niche refers to rare skill sets while routine refers to more common skill sets)
 4. Position to be closed Production- Sterile .02
-Niche refers to rare skill sets while routine refers to more common skill sets
 5. Client Name ANZ: 0.04
 6. Candidate Native Location Ahmedabad 0.02
 7. Candidate Native Location Vijayawada 0.02
