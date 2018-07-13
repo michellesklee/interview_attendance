@@ -78,7 +78,23 @@ We selected the AdaBoost model based on highest precision scores, then conducted
 CV Best Ada Precision: 0.83
 
 #### Feature Importance
-[](https://github.com/jackiekirschner/interview_attendance/blob/master/features_importances.png)
+![feature](https://github.com/jackiekirschner/interview_attendance/blob/master/features_importances.png)
+
+1. Have you obtained the necessary permission to start on time? 0.36
+2. Interview Type Scheduled 0.14
+3. Position to be closed Niche: 0.08
+(Niche refers to rare skill sets while routine refers to more common skill sets)
+4. Position to be closed Production- Sterile .02
+Niche refers to rare skill sets while routine refers to more common skill sets
+5. Client Name ANZ: 0.04
+6. Candidate Native Location Ahmedabad 0.02
+7. Candidate Native Location Vijayawada 0.02
+
 
 ### Conclusion
 Our cross-validated AdaBoost model with optimized parameters predicts false positives with 83% precision.
+
+### Future Steps
+1. Find optimal parameters across all models and compare across models
+2. Look at partial dependence plots
+3. Add logistic regression
