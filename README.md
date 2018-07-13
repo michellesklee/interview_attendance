@@ -91,7 +91,7 @@ CV Best Ada Precision: 0.83
 
 
 ### Conclusion
-Our cross-validated AdaBoost model with optimized parameters predicts false positives with 83% precision.
+Our cross-validated AdaBoost model with optimized parameters predicts with 83% precision.
 
 ### Future Steps
 1. Find optimal parameters across all models and compare across models
