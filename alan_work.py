@@ -5,11 +5,11 @@ df = pd.read_csv('Interview.csv')
 cols = df.columns
 cols = [col.lower().replace(" ", "_") for col in cols]
 df.columns = cols
-df.drop(['date_of_interview', 'name(cand_id)', 'nature_of_skillset', 'unnamed:_23', 'unnamed:_24', 'unnamed:_25', 'unnamed:_26', 'unnamed:_27'], axis=1, inplace=True)
+df.drop(['date_of_interview', 'expected_attendance', 'name(cand_id)', 'nature_of_skillset', 'unnamed:_23', 'unnamed:_24', 'unnamed:_25', 'unnamed:_26', 'unnamed:_27'], axis=1, inplace=True)
 df = df.fillna(0)
 df.rename(index=str, columns={"have_you_obtained_the_necessary_permission_to_start_at_the_required_time": "permission_start_on_time", "hope_there_will_be_no_unscheduled_meetings": "hope_no_unsch_meets", "can_i_call_you_three_hours_before_the_interview_and_follow_up_on_your_attendance_for_the_interview": "call_three_hrs_before", "can_i_have_an_alternative_number/_desk_number._i_assure_you_that_i_will_not_trouble_you_too_much": "alt_num_given", "have_you_taken_a_printout_of_your_updated_resume._have_you_read_the_jd_and_understood_the_same": "come_prepared", "are_you_clear_with_the_venue_details_and_the_landmark.": "can_find_interview_loc", "has_the_call_letter_been_shared": "call_letter_shared"}, inplace=True)
 
-yes_no_cols = ['permission_start_on_time', 'hope_no_unsch_meets', 'call_three_hrs_before', 'alt_num_given', 'come_prepared', 'can_find_interview_loc', 'call_letter_shared', 'expected_attendance', 'observed_attendance']
+yes_no_cols = ['permission_start_on_time', 'hope_no_unsch_meets', 'call_three_hrs_before', 'alt_num_given', 'come_prepared', 'can_find_interview_loc', 'call_letter_shared', 'observed_attendance']
 
 
 for col in yes_no_cols:
@@ -139,5 +139,5 @@ candidate_native_location_map = {
     }
 df['candidate_native_location'] = df['candidate_native_location'].map(lambda x: candidate_native_location_map[x])
 
-
+df.to_pickle('/Users/alanteran/galvanize/interview_attendance/pickled.pkl')
 #df = pd.read_pickle('/Users/alanteran/galvanize/interview_attendance/pickled.pkl')
