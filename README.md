@@ -78,16 +78,20 @@ We selected the AdaBoost model based on highest precision scores, then conducted
 CV Best Ada Precision: 0.83
 
 #### Feature Importance
-![feature](https://github.com/jackiekirschner/interview_attendance/blob/master/features_importances.png)
+![feature](https://github.com/michellesklee/interview_attendance/blob/master/feature_importance.png)
 
-1. Have you obtained the necessary permission to start on time? 0.36
-2. Interview Type Scheduled 0.14
-3. Position to be closed Niche: 0.08
-(Niche refers to rare skill sets while routine refers to more common skill sets)
-4. Position to be closed Production- Sterile .02
-5. Client Name ANZ: 0.04
-6. Candidate Native Location Ahmedabad 0.02
-7. Candidate Native Location Vijayawada 0.02
+1. Necessary permission to start on time: .15
+2. Called 3 hours before: .12
+3. Client name - Hospira: .05
+4. Interview venue - Hyderabad: .04
+5. Client name - Prodapt: .03
+6. Client name - Aon Hewitt: .03
+7. Candidate native location - Cochin: .03
+8. Position to be closed - Niche: .02
+9. Interview type: - Scheduled Walk-in: .02
+10. Interview type: - Scheduled: .02
+11. Client name - ANZ: .02
+
 
 
 ### Conclusion
